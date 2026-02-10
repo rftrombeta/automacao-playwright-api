@@ -4,8 +4,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-18+-339933?logo=node.js)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<!-- [![Tests](https://github.com/seu-usuario/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)](https://github.com/seu-usuario/automacao-playwright-api/actions) -->
 
 Projeto de automação de testes de API utilizando **Playwright Test** e **TypeScript**, com arquitetura modular baseada em **Services**, **Factories** e **Types** para máxima reutilização e manutenibilidade.
+
+> **🔄 CI/CD Configurado**: Testes executam automaticamente a cada commit. Veja [TESTING.md - CI/CD](TESTING.md#-cicd---execução-automática) para detalhes.
 
 ---
 
@@ -18,6 +21,7 @@ Projeto de automação de testes de API utilizando **Playwright Test** e **TypeS
 - [Instalação](#-instalação)
 - [Execução dos Testes](#-execução-dos-testes)
 - [Documentação dos Testes](#-documentação-dos-testes)
+- [CI/CD](#-cicd---integração-contínua)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Padrões Adotados](#-padrões-adotados)
 - [Contribuindo](#-contribuindo)
@@ -157,7 +161,38 @@ O guia inclui:
 
 ---
 
-## �📂 Estrutura do Projeto
+## 🔄 CI/CD - Integração Contínua
+
+O projeto possui **GitHub Actions** configurado para executar testes automaticamente.
+
+### Quando os Testes Executam
+
+- ✅ A cada **push** nas branches `main`, `master` ou `develop`
+- ✅ Em **Pull Requests** para essas branches
+- ✅ **Manualmente** via botão "Run workflow" no GitHub
+
+### Como Acessar os Resultados
+
+1. Acesse a aba **Actions** no repositório do GitHub
+2. Clique no workflow "Testes de API"
+3. Veja o status da execução (passou/falhou)
+4. Role até a seção **Artifacts** ao final da página
+5. Baixe o artefato `playwright-report`
+6. Descompacte e abra o arquivo `index.html` no navegador
+
+### Badge de Status (Opcional)
+
+Adicione ao topo do README após o primeiro workflow executar:
+
+```markdown
+![Tests](https://github.com/rftrombeta/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)
+```
+
+> **📁 Retenção**: Relatórios ficam disponíveis por **30 dias** após cada execução.
+
+---
+
+## 📂 Estrutura do Projeto
 
 ```
 automacao-playwright-api/
@@ -229,6 +264,8 @@ Contribuições são bem-vindas! Para contribuir:
 4. **Push** para a branch (`git push origin feature/nova-feature`)
 5. Abra um **Pull Request**
 
+> **🔄 Testes Automáticos**: Ao abrir um PR, os testes executam automaticamente via GitHub Actions. Certifique-se de que todos passem antes do merge.
+
 ### Padrões de Commit
 
 Utilize [Conventional Commits](https://www.conventionalcommits.org/):
@@ -238,6 +275,7 @@ feat: adiciona suite de testes para DELETE /produtos
 fix: corrige validação de email no userFactory
 docs: atualiza README com exemplos de execução
 test: adiciona cenário de produto com estoque zero
+ci: atualiza workflow do GitHub Actions
 ```
 
 ---
