@@ -17,8 +17,9 @@ Projeto de automação de testes de API utilizando **Playwright Test** e **TypeS
 - [Pré-requisitos](#-pré-requisitos)
 - [Instalação](#-instalação)
 - [Execução dos Testes](#-execução-dos-testes)
+- [Documentação dos Testes](#-documentação-dos-testes)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Padrões e Boas Práticas](#-padrões-e-boas-práticas)
+- [Padrões Adotados](#-padrões-adotados)
 - [Contribuindo](#-contribuindo)
 
 ---
@@ -32,6 +33,9 @@ Este projeto implementa testes automatizados para APIs REST, cobrindo operaçõe
 - ✅ Manutenção simplificada com tipagem forte (TypeScript)
 - ✅ Geração automática de dados de teste com Faker
 - ✅ Relatórios detalhados e traces de execução
+
+> **📚 Documentação Completa de Testes**  
+> Para estratégia, cobertura detalhada e guia de contribuição, consulte **[TESTING.md](TESTING.md)**
 
 ---
 
@@ -121,38 +125,39 @@ npx playwright install
 
 ## ▶️ Execução dos Testes
 
-### Comandos Disponíveis
+### Comandos Básicos
 
 ```bash
-# Executar todos os testes (headless)
+# Executar todos os testes
 npm test
 
-# Executar testes específicos por tag
-npx playwright test --grep @produtos
-
-# Executar apenas testes positivos
-npx playwright test --grep @positivo
-
-# Executar apenas testes negativos
-npx playwright test --grep @negativo
-
-# Executar suite específica
-npx playwright test src/tests/usuarios/postUsuarios.spec.ts
-
-### Visualizar Relatórios
-
-Após a execução, o Playwright gera automaticamente:
-
-- **HTML Report**: `playwright-report/index.html`
-- **Traces**: Disponíveis para cada teste com falha
-
-```bash
+# Visualizar relatório HTML
 npx playwright show-report
 ```
 
+> **💡 Mais comandos disponíveis**  
+> Para executar por tags, filtros específicos, modo debug e outras opções, consulte **[TESTING.md - Como Executar](TESTING.md#️-como-executar)**
+
 ---
 
-## 📂 Estrutura do Projeto
+## � Documentação dos Testes
+
+Para informações detalhadas sobre a estratégia de testes, cobertura completa, padrões e como adicionar novos cenários, consulte:
+
+### **[📖 TESTING.md - Guia Completo de Testes](TESTING.md)**
+
+O guia inclui:
+
+- ✅ **Estratégia e níveis de teste** (positivo, negativo, segurança)
+- ✅ **Cobertura resumida** (Login, Usuários, Produtos)
+- ✅ **Comandos completos de execução** (filtros por tag, método, recurso)
+- ✅ **Padrões e convenções** (tags, nomenclatura, estrutura AAA)
+- ✅ **Como adicionar novos testes** (template step-by-step)
+- ✅ **Boas práticas e anti-patterns** (DO's e DON'Ts)
+
+---
+
+## �📂 Estrutura do Projeto
 
 ```
 automacao-playwright-api/
@@ -198,74 +203,19 @@ automacao-playwright-api/
 
 ---
 
-## 🎯 Padrões e Boas Práticas
+## 🎯 Padrões Adotados
 
-### 1. **Nomenclatura de Testes**
+O projeto segue convenções consistentes para facilitar manutenção e colaboração:
 
-Cada teste segue o padrão:
+- **Services**: Encapsulam lógica de endpoints (evita duplicação)
+- **Factories**: Geram dados dinâmicos com Faker (sem hardcode)
+- **Tags**: Sistema multi-tag para filtros flexíveis (`@recurso`, `@metodo`, `@tipo`)
+- **Nomenclatura**: Testes em português, descritivos e auto-explicativos
+- **Estrutura AAA**: Arrange, Act, Assert em todos os testes
+- **Tipagem forte**: Interfaces TypeScript para todos os payloads
 
-```typescript
-test("Descrição clara do comportamento esperado", {
-  tag: ["@001", "@recurso", "@metodo", "@tipo"],
-}, async ({ request }) => {
-  // Arrange, Act, Assert
-});
-```
-
-### 2. **Tags Organizacionais**
-
-- `@001, @002...`: Identificador único do teste
-- `@usuarios, @produtos, @login`: Recurso testado
-- `@get, @post, @put, @delete`: Método HTTP
-- `@positivo, @negativo`: Tipo de cenário
-
-### 3. **Reutilização com Services**
-
-Evite duplicação criando services:
-
-```typescript
-// ❌ Evite
-const response = await request.post('/usuarios', { data: {...} });
-
-// ✅ Prefira
-const { response } = await criarUsuario(request, { administrador: 'true' });
-```
-
-### 4. **Geração de Dados com Factories**
-
-Use factories para dados dinâmicos:
-
-```typescript
-// ❌ Evite dados hardcoded
-const payload = { nome: 'João Silva', email: 'joao@test.com' };
-
-// ✅ Use factories
-const payload = generateUserPayload({ administrador: 'true' });
-```
-
-### 5. **Tipagem Forte**
-
-Sempre defina interfaces para payloads:
-
-```typescript
-export interface UsuarioPayload {
-  nome: string;
-  email: string;
-  password: string;
-  administrador: string;
-}
-```
-
-### 6. **Validações Completas**
-
-Valide não apenas status, mas também estrutura da resposta:
-
-```typescript
-expect(response.status()).toBe(201);
-const body = await response.json();
-expect(body.message).toBe("Cadastro realizado com sucesso");
-expect(body._id).toBeTruthy();
-```
+> **📖 Detalhes Completos**  
+> Para exemplos de código, anti-patterns e guia completo, consulte **[TESTING.md - Padrões e Boas Práticas](TESTING.md#-padrões-e-convenções)**
 
 ---
 
