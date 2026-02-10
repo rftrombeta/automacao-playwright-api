@@ -1,0 +1,21 @@
+{
+  "name": "automacao-playwright-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "lint": "eslint './**/*.{ts,tsx}' --fix",
+    "format": "eslint './**/*.{ts,tsx,json,md}' --fix",
+    "tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.0",
+    "@playwright/test": "^1.42.0",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}
