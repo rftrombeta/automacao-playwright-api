@@ -302,14 +302,14 @@ Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais de
 
 Desenvolvido por **[Rodrigo Trombeta]**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/seu-perfil)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/seu-usuario)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rodrigo-trombeta-21b89252/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/rftrombeta)
 
 ---
 
 ## 📞 Suporte
 
-Encontrou algum problema ou tem sugestões? Abra uma [issue](https://github.com/seu-usuario/automacao-playwright-api/issues) no GitHub!
+Encontrou algum problema ou tem sugestões? Abra uma [issue](https://github.com/rftrombeta/automacao-playwright-api/issues) no GitHub!
 
 ---
 
