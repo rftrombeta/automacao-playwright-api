@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -49,77 +49,26 @@ jobs:
           path: test-results/
           retention-days: 30
 
-      - name: Publicar resumo no GitHub
-        if: always()
-        run: |
-          if [ -f playwright-report/index.html ]; then
-            echo "## 📊 Resultados dos Testes" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            if [ "${{ github.event_name }}" == "push" ]; then
-              echo "🌐 **Relatório Web**: [Ver Relatório Online](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/index.html)" >> $GITHUB_STEP_SUMMARY
-              echo "🗂️ **Histórico**: [Ver Histórico](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/)" >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            echo "📦 **Download**: Relatório também disponível nos artefatos abaixo" >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: Checkout gh-pages (historico)
+      - name: Upload artifact para GitHub Pages
         if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        continue-on-error: true
-        run: |
-          git fetch origin gh-pages:gh-pages 2>/dev/null || echo "Branch gh-pages não existe ainda"
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-            mkdir -p ../gh-pages-backup
-            cp -R * ../gh-pages-backup/ 2>/dev/null || true
-            git checkout -
-          fi
-
-      - name: Preparar site do relatorio
-        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        run: |
-          REPORT_ID="${{ github.run_number }}-${{ github.run_id }}"
-          REPORT_DATE="$(date -u +'%Y-%m-%d %H:%M UTC')"
-          mkdir -p public/reports
-          if [ -d ../gh-pages-backup/reports ]; then
-            cp -R ../gh-pages-backup/reports/* public/reports/ || true
-          fi
-          rm -rf "public/reports/$REPORT_ID"
-          mkdir -p "public/reports/$REPORT_ID"
-          cp -R playwright-report/* "public/reports/$REPORT_ID/"
-          rm -rf public/reports/latest
-          cp -R "public/reports/$REPORT_ID" public/reports/latest
-
-          {
-            echo "<!doctype html>"
-            echo "<html lang=\"pt-BR\">"
-            echo "<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
-            echo "<title>Relatorios Playwright - Automacao API</title>"
-            echo "<style>body{font-family:Arial,sans-serif;margin:48px auto;max-width:800px;padding:0 16px}h1{margin-bottom:8px;color:#333}.meta{color:#666;margin-bottom:24px}.btn{display:inline-block;padding:12px 24px;background:#0366d6;color:#fff;text-decoration:none;border-radius:6px;margin-bottom:32px}ul{line-height:1.8}a{color:#0366d6}</style>"
-            echo "</head><body>"
-            echo "<h1>📊 Relatorios de Testes - API Playwright</h1>"
-            echo "<p class=\"meta\">Ultima execucao: $REPORT_DATE</p>"
-            echo "<a class=\"btn\" href=\"reports/latest/index.html\">Ver Relatorio Mais Recente</a>"
-            echo "<h2>Historico de Execucoes</h2><ul>"
-            for dir in $(ls -1 public/reports | grep -v '^latest$' | sort -r | head -20); do
-              echo "<li><a href=\"reports/$dir/index.html\">Execucao #$dir</a></li>"
-            done
-            echo "</ul></body></html>"
-          } > public/index.html
-          
-          touch public/.nojekyll
-          echo "Arquivos criados:"
-          ls -la public/
-          ls -la public/reports/
-
-      - name: Publicar no GitHub Pages
-        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
-          publish_branch: gh-pages
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'          force_orphan: true
-          enable_jekyll: false
-          commit_message: 'Publicar relatório de testes executados em ${{ github.sha }}'
+          path: playwright-report
+
+  deploy:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: test
+    runs-on: ubuntu-latest
+    
+    permissions:
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy para GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
