@@ -65,11 +65,15 @@ jobs:
 
       - name: Checkout gh-pages (historico)
         if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        uses: actions/checkout@v4
         continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+        run: |
+          git fetch origin gh-pages:gh-pages 2>/dev/null || echo "Branch gh-pages não existe ainda"
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+            mkdir -p ../gh-pages-backup
+            cp -R * ../gh-pages-backup/ 2>/dev/null || true
+            git checkout -
+          fi
 
       - name: Preparar site do relatorio
         if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
@@ -77,8 +81,8 @@ jobs:
           REPORT_ID="${{ github.run_number }}-${{ github.run_id }}"
           REPORT_DATE="$(date -u +'%Y-%m-%d %H:%M UTC')"
           mkdir -p public/reports
-          if [ -d gh-pages/reports ]; then
-            cp -R gh-pages/reports/* public/reports/ || true
+          if [ -d ../gh-pages-backup/reports ]; then
+            cp -R ../gh-pages-backup/reports/* public/reports/ || true
           fi
           rm -rf "public/reports/$REPORT_ID"
           mkdir -p "public/reports/$REPORT_ID"
@@ -110,3 +114,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: public
           publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
