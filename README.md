@@ -169,15 +169,27 @@ O projeto possui **GitHub Actions** configurado para executar testes automaticam
 
 ### Quando os Testes Executam
 
-- ✅ A cada **push** nas branches `main`, `master` ou `develop`
-- ✅ Em **Pull Requests** para essas branches
+- ✅ A cada **push** na branch `main`
+- ✅ Em **Pull Requests** para a branch `main`
 - ✅ **Manualmente** via botão "Run workflow" no GitHub
+
+### Executar Testes Manualmente
+
+Você pode executar os testes sem fazer commit, utilizando apenas o código já publicado:
+
+1. Acesse a aba **[Actions](../../actions)** no repositório
+2. Selecione o workflow **"Testes de API"** no menu lateral
+3. Clique no botão **"Run workflow"** (canto superior direito)
+4. Selecione a branch `main`
+5. Clique em **"Run workflow"** para confirmar
+
+> **🔒 Permissões**: Apenas usuários com permissão de escrita no repositório podem executar manualmente.
 
 ### Como Acessar os Resultados
 
 #### Opção 1: Visualizar Online (Recomendado) 🌐
 
-O relatório é publicado automaticamente no **GitHub Pages** após cada push nas branches `main` ou `master`:
+O relatório é publicado automaticamente no **GitHub Pages** após cada push na branch `main`:
 
 **Relatorio mais recente**: `https://rftrombeta.github.io/automacao-playwright-api/reports/latest/index.html`
 

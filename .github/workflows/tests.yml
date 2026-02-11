@@ -2,9 +2,9 @@ name: Testes de API
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -48,7 +48,7 @@ jobs:
           retention-days: 30
 
       - name: Publicar no GitHub Pages
-        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
         run: |
           echo "## 📊 Resultados dos Testes" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" -o "${{ github.ref }}" == "refs/heads/master" ]; then
+          if [ "${{ github.event_name }}" == "push" -o "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "### 🌐 Visualização Online" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "🔗 **[Ver Relatório Completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }})**" >> $GITHUB_STEP_SUMMARY
