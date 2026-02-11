@@ -2,10 +2,15 @@ name: Testes de API
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ main, master ]
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -50,11 +55,58 @@ jobs:
           if [ -f playwright-report/index.html ]; then
             echo "## 📊 Resultados dos Testes" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "✅ Relatório completo disponível nos artefatos do workflow" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Para visualizar:" >> $GITHUB_STEP_SUMMARY
-            echo "1. Acesse a aba **Actions** deste repositório" >> $GITHUB_STEP_SUMMARY
-            echo "2. Clique neste workflow" >> $GITHUB_STEP_SUMMARY
-            echo "3. Baixe o artefato **playwright-report**" >> $GITHUB_STEP_SUMMARY
-            echo "4. Abra o arquivo \`index.html\` no navegador" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ github.event_name }}" == "push" ]; then
+              echo "🌐 **Relatório Web**: [Ver Relatório Online](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/index.html)" >> $GITHUB_STEP_SUMMARY
+              echo "🗂️ **Histórico**: [Ver Histórico](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/)" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "📦 **Download**: Relatório também disponível nos artefatos abaixo" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Checkout gh-pages (historico)
+        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Preparar site do relatorio
+        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: |
+          REPORT_ID="${{ github.run_number }}-${{ github.run_id }}"
+          REPORT_DATE="$(date -u +'%Y-%m-%d %H:%M UTC')"
+          mkdir -p public/reports
+          if [ -d gh-pages/reports ]; then
+            cp -R gh-pages/reports/* public/reports/ || true
+          fi
+          rm -rf "public/reports/$REPORT_ID"
+          mkdir -p "public/reports/$REPORT_ID"
+          cp -R playwright-report/* "public/reports/$REPORT_ID/"
+          rm -rf public/reports/latest
+          cp -R "public/reports/$REPORT_ID" public/reports/latest
+
+          {
+            echo "<!doctype html>"
+            echo "<html lang=\"pt-BR\">"
+            echo "<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+            echo "<title>Relatorios Playwright</title>"
+            echo "<style>body{font-family:Arial,sans-serif;margin:32px}h1{margin-bottom:8px}.meta{color:#555}ul{line-height:1.7}</style>"
+            echo "</head><body>"
+            echo "<h1>Relatorios Playwright</h1>"
+            echo "<p class=\"meta\">Ultima execucao: $REPORT_DATE</p>"
+            echo "<p><a href=\"reports/latest/index.html\">Abrir relatorio mais recente</a></p>"
+            echo "<h2>Historico</h2><ul>"
+            for dir in $(ls -1 public/reports | grep -v '^latest$' | sort -r); do
+              echo "<li><a href=\"reports/$dir/index.html\">$dir</a></li>"
+            done
+            echo "</ul></body></html>"
+          } > public/index.html
+
+      - name: Publicar no GitHub Pages
+        if: always() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          publish_branch: gh-pages

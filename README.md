@@ -4,6 +4,8 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-18+-339933?logo=node.js)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Relatorio](https://img.shields.io/badge/Relatorio-HTML-blue)](https://rftrombeta.github.io/automacao-playwright-api/reports/latest/index.html)
+[![Historico](https://img.shields.io/badge/Historico-Reports-lightgrey)](https://rftrombeta.github.io/automacao-playwright-api/reports/)
 <!-- [![Tests](https://github.com/seu-usuario/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)](https://github.com/seu-usuario/automacao-playwright-api/actions) -->
 
 Projeto de automação de testes de API utilizando **Playwright Test** e **TypeScript**, com arquitetura modular baseada em **Services**, **Factories** e **Types** para máxima reutilização e manutenibilidade.
@@ -173,12 +175,28 @@ O projeto possui **GitHub Actions** configurado para executar testes automaticam
 
 ### Como Acessar os Resultados
 
+#### Opção 1: Visualizar Online (Recomendado) 🌐
+
+O relatório é publicado automaticamente no **GitHub Pages** após cada push nas branches `main` ou `master`:
+
+**Relatorio mais recente**: `https://rftrombeta.github.io/automacao-playwright-api/reports/latest/index.html`
+
+**Historico de execucoes**: `https://rftrombeta.github.io/automacao-playwright-api/reports/`
+
+> **⚙️ Ativação Automática**: 
+> O GitHub Pages será configurado automaticamente no primeiro push. Se após o push você ver erro de permissões:
+> 1. Acesse **Settings** → **Actions** → **General**
+> 2. Em "Workflow permissions", escolha **Read and write permissions**
+> 3. Marque **Allow GitHub Actions to create and approve pull requests**
+> 4. Salve e faça novo push
+
+#### Opção 2: Download do Artefato
+
 1. Acesse a aba **Actions** no repositório do GitHub
 2. Clique no workflow "Testes de API"
-3. Veja o status da execução (passou/falhou)
-4. Role até a seção **Artifacts** ao final da página
-5. Baixe o artefato `playwright-report`
-6. Descompacte e abra o arquivo `index.html` no navegador
+3. Role até a seção **Artifacts** ao final da página
+4. Baixe o artefato `playwright-report`
+5. Descompacte e abra o arquivo `index.html` no navegador
 
 ### Badge de Status (Opcional)
 
@@ -188,7 +206,7 @@ Adicione ao topo do README após o primeiro workflow executar:
 ![Tests](https://github.com/rftrombeta/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)
 ```
 
-> **📁 Retenção**: Relatórios ficam disponíveis por **30 dias** após cada execução.
+> **📁 Retenção**: Relatórios web ficam no último estado do push. Artefatos por **30 dias**.
 
 ---
 
