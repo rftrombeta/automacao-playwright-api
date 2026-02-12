@@ -1,5 +1,5 @@
 {
-  "name": "automacao-playwright-api",
+  "name": "playwright-api-testing",
   "version": "0.1.0",
   "private": true,
   "scripts": {

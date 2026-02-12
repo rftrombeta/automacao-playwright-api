@@ -466,4 +466,4 @@ npm test
 
 ---
 
-**Dúvidas?** Abra uma [issue](https://github.com/seu-usuario/automacao-playwright-api/issues) ou consulte a equipe!
+**Dúvidas?** Abra uma [issue](https://github.com/rftrombeta/playwright-api-testing/issues) ou consulte a equipe!
