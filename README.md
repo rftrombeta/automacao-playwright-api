@@ -4,9 +4,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-18+-339933?logo=node.js)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Relatorio](https://img.shields.io/badge/Relatorio-HTML-blue)](https://rftrombeta.github.io/automacao-playwright-api/reports/latest/index.html)
-[![Historico](https://img.shields.io/badge/Historico-Reports-lightgrey)](https://rftrombeta.github.io/automacao-playwright-api/reports/)
-<!-- [![Tests](https://github.com/seu-usuario/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)](https://github.com/seu-usuario/automacao-playwright-api/actions) -->
+[![Relatorio](https://img.shields.io/badge/Relatorio-HTML-blue)](https://rftrombeta.github.io/playwright-api-testing/reports/latest/index.html)
+[![Historico](https://img.shields.io/badge/Historico-Reports-lightgrey)](https://rftrombeta.github.io/playwright-api-testing/reports/)
+<!-- [![Tests](https://github.com/rftrombeta/playwright-api-testing/actions/workflows/tests.yml/badge.svg)](https://github.com/rftrombeta/playwright-api-testing/actions) -->
 
 Projeto de automação de testes de API utilizando **Playwright Test** e **TypeScript**, com arquitetura modular baseada em **Services**, **Factories** e **Types** para máxima reutilização e manutenibilidade.
 
@@ -111,8 +111,8 @@ Antes de começar, certifique-se de ter instalado:
 1. **Clone o repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/automacao-playwright-api.git
-cd automacao-playwright-api
+git clone https://github.com/rftrombeta/playwright-api-testing.git
+cd playwright-api-testing
 ```
 
 2. **Instale as dependências**
@@ -191,9 +191,9 @@ Você pode executar os testes sem fazer commit, utilizando apenas o código já 
 
 O relatório é publicado automaticamente no **GitHub Pages** após cada push na branch `main`:
 
-**Relatorio mais recente**: `https://rftrombeta.github.io/automacao-playwright-api/reports/latest/index.html`
+**Relatorio mais recente**: `https://rftrombeta.github.io/playwright-api-testing/reports/latest/index.html`
 
-**Historico de execucoes**: `https://rftrombeta.github.io/automacao-playwright-api/reports/`
+**Historico de execucoes**: `https://rftrombeta.github.io/playwright-api-testing/reports/`
 
 > **⚙️ Ativação Automática**: 
 > O GitHub Pages será configurado automaticamente no primeiro push. Se após o push você ver erro de permissões:
@@ -215,7 +215,7 @@ O relatório é publicado automaticamente no **GitHub Pages** após cada push na
 Adicione ao topo do README após o primeiro workflow executar:
 
 ```markdown
-![Tests](https://github.com/rftrombeta/automacao-playwright-api/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/rftrombeta/playwright-api-testing/actions/workflows/tests.yml/badge.svg)
 ```
 
 > **📁 Retenção**: Relatórios web ficam no último estado do push. Artefatos por **30 dias**.
@@ -225,7 +225,7 @@ Adicione ao topo do README após o primeiro workflow executar:
 ## 📂 Estrutura do Projeto
 
 ```
-automacao-playwright-api/
+playwright-api-testing/
 │
 ├── src/
 │   ├── api/
@@ -327,7 +327,7 @@ Desenvolvido por **[Rodrigo Trombeta]**
 
 ## 📞 Suporte
 
-Encontrou algum problema ou tem sugestões? Abra uma [issue](https://github.com/rftrombeta/automacao-playwright-api/issues) no GitHub!
+Encontrou algum problema ou tem sugestões? Abra uma [issue](https://github.com/rftrombeta/playwright-api-testing/issues) no GitHub!
 
 ---
 
